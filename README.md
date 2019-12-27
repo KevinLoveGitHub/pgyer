@@ -1,4 +1,7 @@
 # pgyer
+[![Download](https://api.bintray.com/packages/kevinlive/maven/pgyer/images/download.svg) ](https://bintray.com/kevinlive
+/maven/pgyer/_latestVersion)
+
 上传apk到蒲公英
 
 ## example
@@ -6,7 +9,7 @@
 
 ```groovy
 dependencies {
-    classpath 'com.kangxiaoguang.gradle.tools:pgyer:1.0'
+    classpath 'com.kangxiaoguang.gradle.tools:pgyer:1.1'
 }
 ```
 
@@ -26,7 +29,7 @@ pgyer {
     apks {
         release {
             // (选填)蒲公英中显示的名字
-            name = "Gradle插件测试程序"
+            buildName = "Gradle插件测试程序"
             // 需要上传的apk路径
             sourceFile = file("build/outputs/apk/debug/app-debug.apk")
             // (选填) 是否使用git log代替更新描述

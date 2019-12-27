@@ -10,6 +10,11 @@ class Apk {
     File file
 
     /**
+     * (选填) 应用名称
+     */
+    String buildName
+
+    /**
      * (选填) 版本更新描述，请传空字符串，或不传
      */
     String buildUpdateDescription
@@ -42,7 +47,7 @@ class Apk {
         params.put("buildUpdateDescription", buildUpdateDescription)
         params.put("buildPassword", buildPassword)
         params.put("buildInstallType", buildInstallType as String)
-        params.put("buildName", name)
+        params.put("buildName", buildName)
         return params
     }
 
@@ -66,6 +71,7 @@ class Apk {
             }
             apk.buildPassword = _apk.buildPassword
             apk.buildInstallType = _apk.buildInstallType
+            apk.buildName = _apk.buildName
             apks.add(apk)
         }
         return apks

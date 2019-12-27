@@ -1,13 +1,16 @@
 package com.kangxiaoguang.pgyer
 
 import org.gradle.api.Named
-import org.gradle.api.internal.project.ProjectInternal
 
 class ApkTarget implements Named {
     String name
-    ProjectInternal target
 
     File sourceFile
+
+    /**
+     * (选填) 应用名称
+     */
+    String buildName
 
     /**
      * (选填) 版本更新描述，请传空字符串，或不传
@@ -32,6 +35,5 @@ class ApkTarget implements Named {
     public ApkTarget(String name) {
         super()
         this.name = name
-        this.target = target
     }
 }

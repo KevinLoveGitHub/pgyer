@@ -7,6 +7,6 @@ class PgyerUserUploadTask extends PgyerTask {
     @TaskAction
     def userUploadTasks() {
         List<Apk> apks = Apk.getApks(project, apkName)
-        Object.upload(project, apks)
+        super.upload(project, apks)
     }
 }
