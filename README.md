@@ -1,6 +1,5 @@
 # pgyer
-[![Download](https://api.bintray.com/packages/kevinlive/maven/pgyer/images/download.svg) ](https://bintray.com/kevinlive
-/maven/pgyer/_latestVersion)
+[![Download](https://api.bintray.com/packages/kevinlive/maven/pgyer/images/download.svg) ](https://bintray.com/kevinlive/maven/pgyer/_latestVersion)
 
 上传apk到蒲公英
 
