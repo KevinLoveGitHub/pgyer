@@ -1,18 +1,12 @@
 package com.kangxiaoguang.pgyer
 
 import org.gradle.api.Action
-import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.process.ExecSpec
 
 class Apk {
     String name
     File file
-
-    /**
-     * (选填) 应用名称
-     */
-    String buildName
 
     /**
      * (选填) 版本更新描述，请传空字符串，或不传
@@ -25,29 +19,34 @@ class Apk {
     boolean useGitLogInsteadDesc
 
     /**
-     * (必填) 设置App安装密码
+     * (选填) 设置App安装密码
      */
     String buildPassword
 
     /**
-     * (必填)应用安装方式，值为(2,3)。2：密码安装，3：邀请安装
+     * (选填)应用安装方式，值为(2,3)。2：密码安装，3：邀请安装
      */
-    int buildInstallType
+    String buildInstallType
+
+    /**
+     * (选填)所需更新的指定渠道的下载短链接，只可指定一个渠道，字符串型，如：abcd
+     */
+    String buildChannelShortcut
 
     public HashMap<String, String> getParams() {
-        if (buildPassword == null) {
-            throw new GradleException("buildPassword is missing")
-        }
-
-        if (buildInstallType == 0) {
-            throw new GradleException("buildInstallType is missing")
-        }
+//        if (buildPassword == null) {
+//            throw new GradleException("buildPassword is missing")
+//        }
+//
+//        if (buildInstallType == 0) {
+//            throw new GradleException("buildInstallType is missing")
+//        }
 
         HashMap<String, String> params = new HashMap<String, String>()
         params.put("buildUpdateDescription", buildUpdateDescription)
         params.put("buildPassword", buildPassword)
-        params.put("buildInstallType", buildInstallType as String)
-        params.put("buildName", buildName)
+        params.put("buildInstallType", buildInstallType)
+        params.put("buildChannelShortcut", buildChannelShortcut)
         return params
     }
 
@@ -71,7 +70,7 @@ class Apk {
             }
             apk.buildPassword = _apk.buildPassword
             apk.buildInstallType = _apk.buildInstallType
-            apk.buildName = _apk.buildName
+            apk.buildChannelShortcut = _apk.buildChannelShortcut
             apks.add(apk)
         }
         return apks

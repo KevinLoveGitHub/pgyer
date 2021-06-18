@@ -8,11 +8,6 @@ class ApkTarget implements Named {
     File sourceFile
 
     /**
-     * (选填) 应用名称
-     */
-    String buildName
-
-    /**
      * (选填) 版本更新描述，请传空字符串，或不传
      */
     String buildUpdateDescription
@@ -23,14 +18,19 @@ class ApkTarget implements Named {
     boolean useGitLogInsteadDesc
 
     /**
-     * (必填) 设置App安装密码
+     * (选填) 设置App安装密码
      */
     String buildPassword
 
     /**
-     * (必填)应用安装方式，值为(2,3)。2：密码安装，3：邀请安装
+     * (选填) 应用安装方式，值为(2,3)。2：密码安装，3：邀请安装
      */
-    int buildInstallType
+    String buildInstallType
+
+    /**
+     * (选填) 所需更新的指定渠道的下载短链接，只可指定一个渠道，字符串型，如：abcd
+     */
+    String buildChannelShortcut
 
     public ApkTarget(String name) {
         super()

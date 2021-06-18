@@ -6,6 +6,8 @@ import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.json.JSONObject
 
+import java.security.InvalidParameterException
+
 class PgyerTask extends DefaultTask {
     private final String API_END_POINT = "http://www.pgyer.com/apiv2"
 
@@ -19,20 +21,14 @@ class PgyerTask extends DefaultTask {
         HashMap<String, JSONObject> result = httpPost(endPoint, apks)
         for (Apk apk in apks) {
             JSONObject json = result.get(apk.name)
-            errorHandling(apk, json)
             println "${apk.name} result: ${json.toString()}"
         }
     }
 
-    private static void errorHandling(Apk apk, JSONObject json) {
-        print(json)
-    }
-
     private String getEndPoint(Project project) {
-        String uKey = project.extensions.pgyer.uKey
         String _api_key = project.extensions.pgyer._api_key
-        if (uKey == null || _api_key == null) {
-            throw new GradleException("uKey or apiKey is missing")
+        if (_api_key == null) {
+            throw new GradleException("apiKey is missing")
         }
         String endPoint = API_END_POINT + "/app/upload"
         return endPoint
@@ -42,8 +38,9 @@ class PgyerTask extends DefaultTask {
         HashMap<String, JSONObject> result = new HashMap<String, JSONObject>()
         OkHttpClient client = new OkHttpClient();
         def configBuilder = client.newBuilder()
-        configBuilder.connectTimeout = 10 * 1000
+        configBuilder.connectTimeout = 60 * 1000
         configBuilder.readTimeout = 60 * 1000
+        configBuilder.writeTimeout = 10 * 60 * 1000
 
         for (Apk apk in apks) {
             MultipartBody.Builder multipartBuilder = new MultipartBody.Builder()
@@ -60,11 +57,16 @@ class PgyerTask extends DefaultTask {
 
             HashMap<String, String> params = apk.getParams()
             for (String key : params.keySet()) {
-                println("add part key: " + key + " value: " + params.get(key))
-                multipartBuilder.addFormDataPart(key, params.get(key))
+                def value = params.get(key)
+                if (value != null) {
+                    println("add part key: " + key + " value: " + value)
+                    multipartBuilder.addFormDataPart(key, value)
+                }
             }
 
             Request request = new Request.Builder().url(getEndPoint(project)).
+                    header("content-type", "application/x-www-form-urlencoded").
+                    header("enctype", "multipart/form-data").
                     post(multipartBuilder.build()).
                     build()
 
@@ -76,7 +78,16 @@ class PgyerTask extends DefaultTask {
             JSONObject json = new JSONObject(reader.readLine())
             result.put(apk.name, json)
             is.close()
+
+            errorHandling(apk, json)
         }
         return result
+    }
+
+    private void errorHandling(Apk apk, JSONObject json) {
+        def code = json.getInt("code")
+        if (code > 0) {
+            throw new InvalidParameterException(apk.name + ": " + json.toString())
+        }
     }
 }
