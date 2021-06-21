@@ -6,9 +6,20 @@
 项目根目录 `build.gradle` 配置：
 
 ```groovy
-dependencies {
-    classpath 'com.kangxiaoguang.gradle.tools:pgyer:0.0.1'
+// 项目根目录build.gradle添加配置
+buildscript {
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.kangxiaoguang.gradle.tools:pgyer:0.0.3'
+    }
 }
+
+// module目录build.gradle添加配置
+apply plugin: 'com.kangxiaoguang.pgyer'
+
 ```
 
 app modules `app/build.gradle` 配置：
@@ -17,7 +28,7 @@ app modules `app/build.gradle` 配置：
 apply plugin: 'com.kangxiaoguang.pgyer'
 
 pgyer {
-    // 配置蒲公英的_api_key和userKey
+    // 配置蒲公英的_api_key
     Properties properties = new Properties()
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
     _api_key = properties.getProperty("ApiKey")

@@ -7,6 +7,7 @@ import org.gradle.api.Project
 import org.json.JSONObject
 
 import java.security.InvalidParameterException
+import java.util.concurrent.TimeUnit
 
 class PgyerTask extends DefaultTask {
     private final String API_END_POINT = "http://www.pgyer.com/apiv2"
@@ -36,11 +37,13 @@ class PgyerTask extends DefaultTask {
 
     private HashMap<String, JSONObject> httpPost(String endPoint, List<Apk> apks) {
         HashMap<String, JSONObject> result = new HashMap<String, JSONObject>()
-        OkHttpClient client = new OkHttpClient();
-        def configBuilder = client.newBuilder()
-        configBuilder.connectTimeout = 60 * 1000
-        configBuilder.readTimeout = 60 * 1000
-        configBuilder.writeTimeout = 10 * 60 * 1000
+        OkHttpClient client = new OkHttpClient()
+                .newBuilder()
+                .connectTimeout(10 * 60, TimeUnit.SECONDS)
+                .readTimeout(10 * 60, TimeUnit.SECONDS)
+                .writeTimeout(10 * 60, TimeUnit.SECONDS)
+                .build()
+
 
         for (Apk apk in apks) {
             MultipartBody.Builder multipartBuilder = new MultipartBody.Builder()
