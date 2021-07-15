@@ -18,6 +18,11 @@ class ApkTarget implements Named {
     boolean useGitLogInsteadDesc
 
     /**
+     * (选填) 是否使用当前commit到上次tag代替更新描述
+     */
+    boolean useGitLogSinceTagInsteadDesc
+
+    /**
      * (选填) 设置App安装密码
      */
     String buildPassword

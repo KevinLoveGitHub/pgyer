@@ -13,7 +13,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.kangxiaoguang.gradle.tools:pgyer:0.0.3'
+        classpath 'com.kangxiaoguang.gradle.tools:pgyer:0.0.5'
     }
 }
 
@@ -46,6 +46,8 @@ pgyer {
             buildInstallType = 2
             // (选填)所需更新的指定渠道的下载短链接，只可指定一个渠道，字符串型，如：abcd
             buildChannelShortcut = "shine"
+            // (选填) 是否使用当前commit到上次tag代替更新描述，默认false，优先级比useGitLogInsteadDesc参数高
+            useGitLogSinceTagInsteadDesc = true
         }
     }
 }

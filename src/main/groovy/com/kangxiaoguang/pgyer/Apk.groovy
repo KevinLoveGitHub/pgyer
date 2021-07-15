@@ -58,7 +58,26 @@ class Apk {
             Apk apk = new Apk()
             apk.name = name
             apk.file = _apk.sourceFile
-            if (_apk.useGitLogInsteadDesc as boolean) {
+            if (_apk.useGitLogSinceTagInsteadDesc as boolean) {
+
+                // 查看最近两个tag的commit id
+                def tags = getExecResult(project, "git", "rev-list", "--tags", "--max-count=2")
+
+                def currentCommit = getExecResult(project, "git", "rev-parse", "HEAD")
+                def commits
+                if (tags != null && !tags.isEmpty() && ((commits = tags.split("\n")).length > 1)) {
+                    def nextCommit
+                    if (currentCommit.equals(commits[0])) {
+                        // git log --pretty=format:%s
+                        nextCommit = commits[1]
+                    } else {
+                        nextCommit = commits[0]
+                    }
+                    def commitMessage = getExecResult(project, "git", "log", "--pretty=format:%s",
+                            currentCommit + "..." + nextCommit)
+                    apk.buildUpdateDescription = commitMessage
+                }
+            } else if (_apk.useGitLogInsteadDesc as boolean) {
                 def result = getExecResult(project, "git", "log", "--pretty=format:%s", "HEAD", "-1")
                 if (result != null) {
                     apk.buildUpdateDescription = result
