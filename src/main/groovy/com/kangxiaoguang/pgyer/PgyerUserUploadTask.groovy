@@ -1,8 +1,10 @@
 package com.kangxiaoguang.pgyer
 
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 
 class PgyerUserUploadTask extends PgyerTask {
+    @Input
     String apkName
     @TaskAction
     def userUploadTasks() {
